@@ -5,7 +5,6 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -41,6 +40,7 @@ public class AgendaMedica {
     private Integer duracionSlotMinutos;
 
     @Column(name = "activo", nullable = false)
+    @Builder.Default
     private Boolean activo = true;
 
     @CreationTimestamp

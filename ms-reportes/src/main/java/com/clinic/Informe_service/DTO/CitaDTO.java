@@ -1,6 +1,5 @@
 package com.clinic.Informe_service.DTO;
 
-import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;

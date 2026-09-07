@@ -48,6 +48,6 @@ public class CitaEventListener {
 
     @DltHandler
     public void handleDlt(CitaEvent event, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
-        log.error("[ms-notificaciones][DLQ] Evento CitaEvent falló tras reintentos en [{}], CitaId={}", topic, event.getCitaId());
+        log.error("[ms-notificaciones][DLQ] Evento CitaEvent falló tras reintentos en [{}], CitaId={}", topic, event.getId());
     }
 }

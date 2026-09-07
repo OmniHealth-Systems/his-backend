@@ -10,6 +10,7 @@ import com.clinic.Pagos_Service.exception.PagoNotFoundException;
 import com.clinic.Pagos_Service.repository.PagoRepository;
 import com.clinic.Pagos_Service.repository.TransaccionRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,13 @@ public class PagoService {
     private final StripeService stripeService;
     private final PayPalService payPalService;
     private final ObjectMapper objectMapper;
+
+    private Map<String, Object> toMap(Object obj) {
+        if (obj == null) {
+            return null;
+        }
+        return objectMapper.convertValue(obj, new TypeReference<Map<String, Object>>() {});
+    }
 
     @Transactional
     public PagoResponse crearPago(PagoRequest request) {
@@ -152,7 +160,7 @@ public class PagoService {
         Map<String, Object> detalles = null;
         try {
             if (pago.getDetalles() != null) {
-                detalles = objectMapper.readValue(pago.getDetalles(), Map.class);
+                detalles = objectMapper.readValue(pago.getDetalles(), new TypeReference<Map<String, Object>>() {});
             }
         } catch (JsonProcessingException e) {
             // Log error pero continuar
@@ -170,14 +178,14 @@ public class PagoService {
                 .detalles(detalles)
                 .build();
     }
-    // En PagoService.java
+
     public List<PagoResponse> obtenerPagosPorCita(UUID citaId) {
         List<Pago> pagos = pagoRepository.findByCitaId(citaId);
         return pagos.stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
-    // En PagoService.java
+
     public List<PagoResponse> obtenerHistorialPagos(UUID pacienteId, Integer meses) {
         LocalDateTime fechaInicio = LocalDateTime.now().minusMonths(meses != null ? meses : 12);
         List<Pago> pagos = pagoRepository.findByPacienteIdAndFechaCreacionAfter(pacienteId, fechaInicio);
@@ -185,7 +193,7 @@ public class PagoService {
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
-    // En PagoService.java
+
     public PagoResponse marcarComoPendiente(UUID pagoId) {
         Pago pago = pagoRepository.findById(pagoId)
                 .orElseThrow(() -> new PagoNotFoundException(pagoId));
@@ -197,6 +205,7 @@ public class PagoService {
 
         return mapToResponse(pago);
     }
+
     public void procesarEventoPayPal(WebhookEvent event) {
         String tipoEvento = event.getType();
 
@@ -215,7 +224,7 @@ public class PagoService {
                         "Evento PayPal no manejado: " + tipoEvento);
         }
     }
-/* En PagoService.java, después de procesarEventoPayPal */
+
     public void procesarEventoStripe(WebhookEvent event) {
         String tipoEvento = event.getType();
 
@@ -234,11 +243,15 @@ public class PagoService {
                         "Evento Stripe no manejado: " + tipoEvento);
         }
     }
+
     private void procesarPagoExitosoStripe(WebhookEvent event) {
-        Map<String, Object> paymentIntent = (Map<String, Object>) event.getData().get("object");
+        Map<String, Object> paymentIntent = toMap(event.getData().get("object"));
+        if (paymentIntent == null) return;
+
         String paymentIntentId = (String) paymentIntent.get("id");
-        BigDecimal monto = BigDecimal.valueOf((Integer) paymentIntent.get("amount") / 100.0);
-        String moneda = (String) paymentIntent.get("currency");
+        Object amountObj = paymentIntent.get("amount");
+        BigDecimal monto = amountObj instanceof Number num ?
+                BigDecimal.valueOf(num.doubleValue() / 100.0) : BigDecimal.ZERO;
 
         Pago pago = pagoRepository.findByReferenciaPago(paymentIntentId)
                 .orElseGet(() -> {
@@ -258,10 +271,13 @@ public class PagoService {
     }
 
     private void procesarPagoExitosoPayPal(WebhookEvent event) {
-        Map<String, Object> resource = (Map<String, Object>) event.getData().get("resource");
+        Map<String, Object> resource = toMap(event.getData().get("resource"));
+        if (resource == null) return;
+
         String captureId = (String) resource.get("id");
-        Map<String, Object> amount = (Map<String, Object>) resource.get("amount");
-        BigDecimal monto = new BigDecimal((String) amount.get("value"));
+        Map<String, Object> amount = toMap(resource.get("amount"));
+        BigDecimal monto = amount != null && amount.get("value") != null ?
+                new BigDecimal(amount.get("value").toString()) : BigDecimal.ZERO;
 
         Pago pago = pagoRepository.findByReferenciaPago(captureId)
                 .orElseGet(() -> {
@@ -286,8 +302,11 @@ public class PagoService {
                 .build();
         transaccionRepository.save(transaccion);
     }
+
     private void procesarReembolsoPayPal(WebhookEvent event) {
-        Map<String, Object> resource = (Map<String, Object>) event.getData().get("resource");
+        Map<String, Object> resource = toMap(event.getData().get("resource"));
+        if (resource == null) return;
+
         String refundId = (String) resource.get("id");
         String captureId = (String) resource.get("capture_id");
 
@@ -296,8 +315,9 @@ public class PagoService {
                 .orElseThrow(() -> new PagoException("Pago no encontrado para referencia PayPal: " + captureId));
 
         // Obtener detalles del reembolso
-        Map<String, Object> amount = (Map<String, Object>) resource.get("amount");
-        BigDecimal montoReembolso = new BigDecimal((String) amount.get("value"));
+        Map<String, Object> amount = toMap(resource.get("amount"));
+        BigDecimal montoReembolso = amount != null && amount.get("value") != null ?
+                new BigDecimal(amount.get("value").toString()) : BigDecimal.ZERO;
 
         // Actualizar estado del pago
         if (pago.getEstado() != EstadoPago.REEMBOLSADO) {
@@ -318,7 +338,9 @@ public class PagoService {
     }
 
     private void procesarPagoFallidoPayPal(WebhookEvent event) {
-        Map<String, Object> resource = (Map<String, Object>) event.getData().get("resource");
+        Map<String, Object> resource = toMap(event.getData().get("resource"));
+        if (resource == null) return;
+
         String captureId = (String) resource.get("id");
 
         // Declarar motivo con un valor predeterminado
@@ -333,9 +355,9 @@ public class PagoService {
                 pago.setEstado(EstadoPago.FALLIDO);
 
                 // Obtener motivo del fallo
-                Map<String, Object> details = (Map<String, Object>) resource.get("details");
-                if (details != null) {
-                    motivo = (String) details.get("description");
+                Map<String, Object> details = toMap(resource.get("details"));
+                if (details != null && details.get("description") != null) {
+                    motivo = details.get("description").toString();
                 }
 
                 try {
@@ -353,17 +375,17 @@ public class PagoService {
             nuevoPago.setReferenciaPago(captureId);
             nuevoPago.setEstado(EstadoPago.FALLIDO);
 
-            Map<String, Object> amount = (Map<String, Object>) resource.get("amount");
-            if (amount != null) {
-                BigDecimal monto = new BigDecimal((String) amount.get("value"));
+            Map<String, Object> amount = toMap(resource.get("amount"));
+            if (amount != null && amount.get("value") != null) {
+                BigDecimal monto = new BigDecimal(amount.get("value").toString());
                 nuevoPago.setMonto(monto);
             }
 
             nuevoPago.setMetodo(MetodoPago.PAYPAL);
 
-            Map<String, Object> details = (Map<String, Object>) resource.get("details");
-            if (details != null) {
-                motivo = (String) details.get("description");
+            Map<String, Object> details = toMap(resource.get("details"));
+            if (details != null && details.get("description") != null) {
+                motivo = details.get("description").toString();
                 nuevoPago.setDetalles("{\"motivo_fallo\":\"" + motivo + "\"}");
             } else {
                 nuevoPago.setDetalles("{\"motivo_fallo\":\"Error desconocido\"}");
@@ -375,7 +397,9 @@ public class PagoService {
     }
 
     private void procesarReembolsoStripe(WebhookEvent event) {
-        Map<String, Object> charge = (Map<String, Object>) event.getData().get("object");
+        Map<String, Object> charge = toMap(event.getData().get("object"));
+        if (charge == null) return;
+
         String refundId = (String) charge.get("id");
         String paymentIntentId = (String) charge.get("payment_intent");
 
@@ -384,7 +408,9 @@ public class PagoService {
                 .orElseThrow(() -> new PagoException("Pago no encontrado para referencia Stripe: " + paymentIntentId));
 
         // Obtener detalles del reembolso
-        BigDecimal montoReembolso = BigDecimal.valueOf((Integer) charge.get("amount_refunded") / 100.0);
+        Object refundedObj = charge.get("amount_refunded");
+        BigDecimal montoReembolso = refundedObj instanceof Number num ?
+                BigDecimal.valueOf(num.doubleValue() / 100.0) : BigDecimal.ZERO;
 
         // Actualizar estado del pago
         if (pago.getEstado() != EstadoPago.REEMBOLSADO) {
@@ -405,7 +431,9 @@ public class PagoService {
     }
 
     private void procesarPagoFallidoStripe(WebhookEvent event) {
-        Map<String, Object> paymentIntent = (Map<String, Object>) event.getData().get("object");
+        Map<String, Object> paymentIntent = toMap(event.getData().get("object"));
+        if (paymentIntent == null) return;
+
         String paymentIntentId = (String) paymentIntent.get("id");
 
         // Declarar motivo con un valor predeterminado
@@ -420,9 +448,9 @@ public class PagoService {
                 pago.setEstado(EstadoPago.FALLIDO);
 
                 // Obtener motivo del fallo
-                Map<String, Object> lastError = (Map<String, Object>) paymentIntent.get("last_payment_error");
-                if (lastError != null) {
-                    motivo = (String) lastError.get("message");
+                Map<String, Object> lastError = toMap(paymentIntent.get("last_payment_error"));
+                if (lastError != null && lastError.get("message") != null) {
+                    motivo = lastError.get("message").toString();
                 }
 
                 try {
@@ -440,13 +468,15 @@ public class PagoService {
             nuevoPago.setReferenciaPago(paymentIntentId);
             nuevoPago.setEstado(EstadoPago.FALLIDO);
 
-            BigDecimal monto = BigDecimal.valueOf((Integer) paymentIntent.get("amount") / 100.0);
+            Object amountObj = paymentIntent.get("amount");
+            BigDecimal monto = amountObj instanceof Number num ?
+                    BigDecimal.valueOf(num.doubleValue() / 100.0) : BigDecimal.ZERO;
             nuevoPago.setMonto(monto);
             nuevoPago.setMetodo(MetodoPago.TARJETA_CREDITO);
 
-            Map<String, Object> lastError = (Map<String, Object>) paymentIntent.get("last_payment_error");
-            if (lastError != null) {
-                motivo = (String) lastError.get("message");
+            Map<String, Object> lastError = toMap(paymentIntent.get("last_payment_error"));
+            if (lastError != null && lastError.get("message") != null) {
+                motivo = lastError.get("message").toString();
                 nuevoPago.setDetalles("{\"motivo_fallo\":\"" + motivo + "\"}");
             } else {
                 nuevoPago.setDetalles("{\"motivo_fallo\":\"Error desconocido\"}");

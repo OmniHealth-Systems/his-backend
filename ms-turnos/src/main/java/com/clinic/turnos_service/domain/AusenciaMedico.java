@@ -15,6 +15,7 @@ import java.time.LocalDate;
 @Data @Builder @NoArgsConstructor @AllArgsConstructor
 public class AusenciaMedico {
     public enum TipoAusencia { VACACIONES, LICENCIA_MEDICA, CAPACITACION, CONGRESO, AUSENCIA_INJUSTIFICADA }
+    public enum EstadoAusencia { PENDIENTE, APROBADA, RECHAZADA }
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,6 +36,12 @@ public class AusenciaMedico {
     @Column(name = "motivo", columnDefinition = "TEXT")
     private String motivo;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado", nullable = false)
+    @Builder.Default
+    private EstadoAusencia estado = EstadoAusencia.PENDIENTE;
+
     @Column(name = "aprobado")
+    @Builder.Default
     private Boolean aprobado = false;
 }

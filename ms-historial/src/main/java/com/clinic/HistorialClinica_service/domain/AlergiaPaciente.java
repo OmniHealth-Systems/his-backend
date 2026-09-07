@@ -45,6 +45,7 @@ public class AlergiaPaciente {
     private String reaccionClinica;
 
     @Column(name = "confirmada")
+    @Builder.Default
     private Boolean confirmada = false;
 
     @Column(name = "doctor_confirmador_id")

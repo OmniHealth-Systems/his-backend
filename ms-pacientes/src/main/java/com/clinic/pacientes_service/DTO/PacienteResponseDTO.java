@@ -1,8 +1,8 @@
 package com.clinic.pacientes_service.DTO;
 
+import com.clinic.pacientes_service.domain.Aseguradora;
 import com.clinic.pacientes_service.domain.Direccion;
 import com.clinic.pacientes_service.domain.Paciente;
-import com.clinic.pacientes_service.domain.SeguroMedico;
 import lombok.Builder;
 import lombok.Data;
 
@@ -25,7 +25,7 @@ public class PacienteResponseDTO {
     private String tipoDocumento;
     private String dni;
     private String contactoEmergencia;
-    private SeguroMedico seguroMedico;
+    private Aseguradora seguroMedico;
     public static PacienteResponseDTO fromEntity(Paciente paciente) {
         return PacienteResponseDTO.builder()
                 .id(paciente.getId())

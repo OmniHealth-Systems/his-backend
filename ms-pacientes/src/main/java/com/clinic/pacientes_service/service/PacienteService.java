@@ -2,9 +2,9 @@ package com.clinic.pacientes_service.service;
 import com.clinic.pacientes_service.DTO.PacienteRequestDTO;
 import com.clinic.pacientes_service.DTO.PacienteResponseDTO;
 import com.clinic.pacientes_service.client.CitasClient;
+import com.clinic.pacientes_service.domain.Aseguradora;
 import com.clinic.pacientes_service.domain.Direccion;
 import com.clinic.pacientes_service.domain.Paciente;
-import com.clinic.pacientes_service.domain.SeguroMedico;
 import com.clinic.pacientes_service.exception.PacienteConCitasException;
 import com.clinic.pacientes_service.exception.ResourceNotFoundException;
 import com.clinic.pacientes_service.exception.UniqueConstraintViolationException;
@@ -56,7 +56,7 @@ public class PacienteService {
         Direccion direccion = direccionRepository.findById(pacienteDTO.getDireccionId())
                 .orElseThrow(() -> new ResourceNotFoundException("Dirección no encontrada"));
 
-        SeguroMedico seguroMedico = seguroMedicoRepository.findById(pacienteDTO.getSeguroMedicoId())
+        Aseguradora seguroMedico = seguroMedicoRepository.findById(pacienteDTO.getSeguroMedicoId())
                 .orElseThrow(() -> new ResourceNotFoundException("Seguro médico no encontrado"));
 
         // Crear entidad Paciente
@@ -101,7 +101,7 @@ public class PacienteService {
         Direccion direccion = direccionRepository.findById(pacienteDTO.getDireccionId())
                 .orElseThrow(() -> new ResourceNotFoundException("Dirección no encontrada"));
 
-        SeguroMedico seguroMedico = seguroMedicoRepository.findById(pacienteDTO.getSeguroMedicoId())
+        Aseguradora seguroMedico = seguroMedicoRepository.findById(pacienteDTO.getSeguroMedicoId())
                 .orElseThrow(() -> new ResourceNotFoundException("Seguro médico no encontrado"));
 
         // Actualizar datos

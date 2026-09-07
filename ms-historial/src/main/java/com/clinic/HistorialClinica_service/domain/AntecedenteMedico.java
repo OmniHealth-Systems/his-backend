@@ -42,6 +42,7 @@ public class AntecedenteMedico {
     private String parentescoFamiliar;
 
     @Column(name = "activo", nullable = false)
+    @Builder.Default
     private Boolean activo = true;
 
     @Column(name = "doctor_registrador_id")

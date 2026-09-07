@@ -5,7 +5,6 @@ import com.clinic.Pagos_Service.DTO.PagoResponse;
 import com.clinic.Pagos_Service.DTO.ProcesarPagoRequest;
 import com.clinic.Pagos_Service.DTO.ReembolsoRequest;
 import com.clinic.Pagos_Service.service.PagoService;
-import com.clinic.Pagos_Service.service.ReembolsoService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +19,6 @@ import java.util.UUID;
 public class PagoController {
 
     private final PagoService pagoService;
-    private final ReembolsoService reembolsoService;
 
     @PostMapping
     public ResponseEntity<PagoResponse> crearPago(@RequestBody PagoRequest request) {

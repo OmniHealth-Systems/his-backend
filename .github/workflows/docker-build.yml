@@ -30,6 +30,10 @@ jobs:
           - ms-laboratorio
           - ms-farmacia
           - ms-auditoria
+          - ms-turnos
+          - ms-documentos
+          - ms-logistica
+          - ms-soporte
 
     steps:
       - name: Checkout Repository
@@ -38,9 +42,14 @@ jobs:
       - name: Set up JDK 21 (Eclipse Temurin)
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
-          distribution: 'temurin'
+          java-version: "21"
+          distribution: "temurin"
           cache: maven
+
+      - name: Set up Snyk Security CLI
+        uses: snyk/actions/setup@v3
+        with:
+          snyk-version: latest
 
       - name: Build Service JAR with Maven
         run: |

@@ -96,7 +96,12 @@
 			<artifactId>flyway-core</artifactId>
 			<version>10.7.0</version> <!-- Asegúrate de usar la última versión disponible -->
 		</dependency>
-
+		<!-- Sentry SDK Exception Tracking -->
+		<dependency>
+			<groupId>io.sentry</groupId>
+			<artifactId>sentry-spring-boot-starter</artifactId>
+			<version>7.14.0</version>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>

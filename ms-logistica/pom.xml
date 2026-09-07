@@ -9,10 +9,10 @@
 		<relativePath/>
 	</parent>
 	<groupId>com.clinic</groupId>
-	<artifactId>ms-auditoria</artifactId>
+	<artifactId>ms-logistica</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ms-auditoria</name>
-	<description>Microservicio de Auditoria Maestra y Trazabilidad Inmutable (Kafka Consumer)</description>
+	<name>ms-logistica</name>
+	<description>Microservicio de Logistica e Inventario Hospitalario</description>
 
 	<properties>
 		<java.version>21</java.version>
@@ -22,15 +22,19 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
@@ -108,4 +112,5 @@
 			</plugin>
 		</plugins>
 	</build>
+
 </project>

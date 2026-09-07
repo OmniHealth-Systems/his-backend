@@ -9,10 +9,10 @@
 		<relativePath/>
 	</parent>
 	<groupId>com.clinic</groupId>
-	<artifactId>ms-auditoria</artifactId>
+	<artifactId>ms-soporte</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ms-auditoria</name>
-	<description>Microservicio de Auditoria Maestra y Trazabilidad Inmutable (Kafka Consumer)</description>
+	<name>ms-soporte</name>
+	<description>Microservicio de Soporte y Helpdesk Hospitalario</description>
 
 	<properties>
 		<java.version>21</java.version>
@@ -22,10 +22,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<dependency>
@@ -33,12 +29,16 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.kafka</groupId>
-			<artifactId>spring-kafka</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springdoc</groupId>
@@ -108,4 +108,5 @@
 			</plugin>
 		</plugins>
 	</build>
+
 </project>

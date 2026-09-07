@@ -61,7 +61,7 @@ public class Paciente {
 
     @ManyToOne
     @JoinColumn(name = "id_seguro_medico", nullable = false)
-    private SeguroMedico seguroMedico;
+    private Aseguradora seguroMedico;
 
     public enum Genero {
         FEMENINO, MASCULINO

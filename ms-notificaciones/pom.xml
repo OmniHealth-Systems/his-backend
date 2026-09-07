@@ -133,6 +133,12 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
+        <!-- Sentry SDK Exception Tracking -->
+        <dependency>
+            <groupId>io.sentry</groupId>
+            <artifactId>sentry-spring-boot-starter</artifactId>
+            <version>7.14.0</version>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>

@@ -3,13 +3,11 @@ package com.clinic.farmacia_service.controller;
 import com.clinic.farmacia_service.domain.DetalleVentaFarmacia;
 import com.clinic.farmacia_service.domain.VentaFarmacia;
 import com.clinic.farmacia_service.service.VentaFarmaciaService;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @RestController

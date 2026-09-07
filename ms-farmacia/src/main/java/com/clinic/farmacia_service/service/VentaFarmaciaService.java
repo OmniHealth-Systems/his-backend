@@ -52,7 +52,7 @@ public class VentaFarmaciaService {
                     .orElseThrow(() -> new EntityNotFoundException("Medicamento no encontrado: " + item.getMedicamento().getId()));
 
             if (med.getStockActual() < item.getCantidad()) {
-                throw new IllegalStateException("Stock insuficiente para '" + med.getNombreComercial() + "'. Solicitado: " + item.getCantidad() + ", Disponible: " + med.getStockActual());
+                throw new IllegalStateException("Stock insuficiente para '" + med.getNombre() + "'. Solicitado: " + item.getCantidad() + ", Disponible: " + med.getStockActual());
             }
 
             int stockPrevio = med.getStockActual();

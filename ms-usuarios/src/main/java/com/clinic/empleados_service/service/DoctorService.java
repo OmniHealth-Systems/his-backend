@@ -1,7 +1,6 @@
 package com.clinic.empleados_service.service;
 
 import com.clinic.empleados_service.DTO.DoctorDTO;
-import com.clinic.empleados_service.client.FranquiciasClient;
 import com.clinic.empleados_service.domain.Doctor;
 import com.clinic.empleados_service.domain.Especialidad;
 import com.clinic.empleados_service.domain.Turno;
@@ -24,7 +23,6 @@ public class DoctorService {
     private final DoctorRepository doctorRepository;
     private final EspecialidadRepository especialidadRepository;
     private final TurnoRepository turnoRepository;
-    private final FranquiciasClient franquiciasClient;
 
     @Transactional
     public DoctorDTO createDoctor(DoctorDTO doctorDTO) {
