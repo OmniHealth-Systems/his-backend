@@ -1,0 +1,71 @@
+server:
+  port: 8087
+
+spring:
+  application:
+    name: ms-facturacion
+  profiles:
+    active: dev
+  quartz:
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: always
+    properties:
+      org.quartz.jobStore.driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+      org.quartz.jobStore.useProperties: true
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/pagos_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      stripeService:
+        failure-rate-threshold: 50
+        minimum-number-of-calls: 10
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 20
+        wait-duration-in-open-state: 10s
+      paypalService:
+        failure-rate-threshold: 40
+        minimum-number-of-calls: 5
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 15
+        wait-duration-in-open-state: 15s
+  retry:
+    instances:
+      stripeService:
+        max-attempts: 3
+        wait-duration: 1s
+      paypalService:
+        max-attempts: 2
+        wait-duration: 2s
+
+feign:
+  client:
+    config:
+      ms-citas:
+        url: ${MS_CITAS_URL:http://localhost:8082}
+      ms-pacientes:
+        url: ${MS_PACIENTES_URL:http://localhost:8083}
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka}
+    registerWithEureka: true
+    fetchRegistry: true

@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: ms-notificaciones
+  datasource:
+    url: jdbc:mysql://${AIVEN_DB_HOST}:${AIVEN_DB_PORT}/notificacion_db?sslMode=REQUIRED&serverTimezone=UTC&createDatabaseIfNotExist=true
+    username: ${AIVEN_DB_USER}
+    password: ${AIVEN_DB_PASS}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  kafka:
+    bootstrap-servers: ${CONFLUENT_BOOTSTRAP_SERVERS}
+    consumer:
+      group-id: notificaciones-group
+      auto-offset-reset: earliest
+    properties:
+      security.protocol: SASL_SSL
+      sasl.mechanism: PLAIN
+      sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="${CONFLUENT_API_KEY}" password="${CONFLUENT_API_SECRET}";
+
+logging:
+  level:
+    com.clinic: DEBUG

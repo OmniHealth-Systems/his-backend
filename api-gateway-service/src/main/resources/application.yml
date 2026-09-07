@@ -1,0 +1,102 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway-service
+  profiles:
+    active: dev
+  data:
+    redis:
+      host: ${UPSTASH_REDIS_HOST}
+      port: ${UPSTASH_REDIS_PORT}
+      password: ${UPSTASH_REDIS_PASSWORD}
+      ssl:
+        enabled: ${UPSTASH_REDIS_SSL:true}
+      timeout: 2000ms
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${AUTH0_ISSUER_URI}
+  cloud:
+    gateway:
+      mvc:
+        routes:
+          - id: ms-sedes
+            uri: ${MS_SEDES_URI:http://localhost:8081}
+            predicates:
+              - Path=/api/v1/sedes/**, /api/v1/clinicas/**, /api/sedes/**, /api/clinicas/**
+          - id: ms-citas
+            uri: ${MS_CITAS_URI:http://localhost:8082}
+            predicates:
+              - Path=/api/v1/citas/**, /api/citas/**
+          - id: ms-pacientes
+            uri: ${MS_PACIENTES_URI:http://localhost:8083}
+            predicates:
+              - Path=/api/v1/pacientes/**, /api/pacientes/**, /direcciones/**
+          - id: ms-usuarios
+            uri: ${MS_USUARIOS_URI:http://localhost:8084}
+            predicates:
+              - Path=/api/v1/usuarios/**, /api/v1/doctores/**, /api/v1/especialidades/**, /api/v1/turnos/**, /api/doctores/**, /api/especialidades/**, /api/turnos/**
+          - id: ms-reportes
+            uri: ${MS_REPORTES_URI:http://localhost:8085}
+            predicates:
+              - Path=/api/v1/reportes/**, /api/v1/informes/**, /api/informes/**
+          - id: ms-historial
+            uri: ${MS_HISTORIAL_URI:http://localhost:8086}
+            predicates:
+              - Path=/api/v1/historial/**, /api/v1/registros/**, /api/historial/**, /api/registros/**
+          - id: ms-facturacion
+            uri: ${MS_FACTURACION_URI:http://localhost:8087}
+            predicates:
+              - Path=/api/v1/facturacion/**, /api/v1/pagos/**, /api/pagos/**, /api/webhook/**
+          - id: ms-notificaciones
+            uri: ${MS_NOTIFICACIONES_URI:http://localhost:8088}
+            predicates:
+              - Path=/api/v1/notificaciones/**, /notificaciones/**
+          - id: ms-consultas
+            uri: ${MS_CONSULTAS_URI:http://localhost:8089}
+            predicates:
+              - Path=/api/v1/consultas/**, /api/consultas/**
+          - id: ms-laboratorio
+            uri: ${MS_LABORATORIO_URI:http://localhost:8090}
+            predicates:
+              - Path=/api/v1/laboratorio/**, /api/laboratorio/**
+          - id: ms-farmacia
+            uri: ${MS_FARMACIA_URI:http://localhost:8091}
+            predicates:
+              - Path=/api/v1/farmacia/**, /api/farmacia/**
+          - id: ms-auditoria
+            uri: ${MS_AUDITORIA_URI:http://localhost:8092}
+            predicates:
+              - Path=/api/v1/auditoria/**, /api/auditoria/**
+          - id: ms-turnos
+            uri: ${MS_TURNOS_URI:http://localhost:8093}
+            predicates:
+              - Path=/api/v1/turnos/**, /api/v1/agendas/**, /api/v1/ausencias/**
+          - id: ms-documentos
+            uri: ${MS_DOCUMENTOS_URI:http://localhost:8094}
+            predicates:
+              - Path=/api/v1/documentos/**, /api/v1/archivos/**
+          - id: ms-logistica
+            uri: ${MS_LOGISTICA_URI:http://localhost:8095}
+            predicates:
+              - Path=/api/v1/logistica/**, /api/v1/insumos/**
+          - id: ms-soporte
+            uri: ${MS_SOPORTE_URI:http://localhost:8096}
+            predicates:
+              - Path=/api/v1/soporte/**, /api/v1/tickets/**, /api/v1/faq/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka}
+    registerWithEureka: true
+    fetchRegistry: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics

@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: ms-historial
+  datasource:
+    url: jdbc:mysql://${AIVEN_DB_HOST}:${AIVEN_DB_PORT}/historial_clinico_db?sslMode=REQUIRED&serverTimezone=UTC&createDatabaseIfNotExist=true
+    username: ${AIVEN_DB_USER}
+    password: ${AIVEN_DB_PASS}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+logging:
+  level:
+    com.clinic: DEBUG

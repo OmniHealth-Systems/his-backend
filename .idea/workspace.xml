@@ -4,10 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3e492e01-f4d9-4d78-b801-1f2f70779b49" name="Changes" comment="add notificaciones">
+    <list default="true" id="3e492e01-f4d9-4d78-b801-1f2f70779b49" name="Changes" comment="update">
+      <change afterPath="$PROJECT_DIR$/pacientes-service/src/main/java/com/clinic/pacientes_service/DTO/AseguradoraRequestDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pacientes-service/src/main/java/com/clinic/pacientes_service/DTO/DireccionRequestDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pacientes-service/src/main/java/com/clinic/pacientes_service/config/WebConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pacientes-service/src/main/java/com/clinic/pacientes_service/controller/DireccionController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pacientes-service/src/main/java/com/clinic/pacientes_service/service/AseguradoraService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pacientes-service/src/main/java/com/clinic/pacientes_service/service/DireccionService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/empleados-service/src/main/java/com/clinic/empleados_service/domain/Disponibilidad.java" beforeDir="false" afterPath="$PROJECT_DIR$/empleados-service/src/main/java/com/clinic/empleados_service/domain/Disponibilidad.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/empleados-service/src/main/java/com/clinic/empleados_service/domain/Doctor.java" beforeDir="false" afterPath="$PROJECT_DIR$/empleados-service/src/main/java/com/clinic/empleados_service/domain/Doctor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/empleados-service/src/main/java/com/clinic/empleados_service/domain/Especialidad.java" beforeDir="false" afterPath="$PROJECT_DIR$/empleados-service/src/main/java/com/clinic/empleados_service/domain/Especialidad.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/empleados-service/src/main/java/com/clinic/empleados_service/domain/Turno.java" beforeDir="false" afterPath="$PROJECT_DIR$/empleados-service/src/main/java/com/clinic/empleados_service/domain/Turno.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pacientes-service/src/main/java/com/clinic/pacientes_service/controller/PacienteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/pacientes-service/src/main/java/com/clinic/pacientes_service/controller/PacienteController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pacientes-service/src/main/java/com/clinic/pacientes_service/domain/Paciente.java" beforeDir="false" afterPath="$PROJECT_DIR$/pacientes-service/src/main/java/com/clinic/pacientes_service/domain/Paciente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pacientes-service/src/main/java/com/clinic/pacientes_service/domain/SeguroMedico.java" beforeDir="false" afterPath="$PROJECT_DIR$/pacientes-service/src/main/java/com/clinic/pacientes_service/domain/Aseguradora.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pacientes-service/src/main/java/com/clinic/pacientes_service/repository/SeguroMedicoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/pacientes-service/src/main/java/com/clinic/pacientes_service/repository/AseguradoraRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pacientes-service/src/main/java/com/clinic/pacientes_service/service/PacienteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/pacientes-service/src/main/java/com/clinic/pacientes_service/service/PacienteService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,6 +81,7 @@
     &quot;Spring Boot.EmpleadosServiceApplication.executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.EurekaServerApplication.executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.FranquiciaServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.GatewayServiceApplication.executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.HistorialClinicaServiceApplication.executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.InformeServiceApplication.executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.NotificacionesServiceApplication.executor&quot;: &quot;Run&quot;,
@@ -230,7 +242,17 @@
       <workItem from="1750199523379" duration="3081000" />
       <workItem from="1750358192093" duration="265000" />
       <workItem from="1750400399658" duration="8429000" />
-      <workItem from="1750551686818" duration="534000" />
+      <workItem from="1750551686818" duration="906000" />
+      <workItem from="1750704611448" duration="659000" />
+      <workItem from="1750801741757" duration="2350000" />
+      <workItem from="1751052217513" duration="1431000" />
+      <workItem from="1751088241903" duration="828000" />
+      <workItem from="1751089655176" duration="455000" />
+      <workItem from="1751155146863" duration="2939000" />
+      <workItem from="1751212409127" duration="7007000" />
+      <workItem from="1751224039864" duration="1924000" />
+      <workItem from="1751228930964" duration="609000" />
+      <workItem from="1751307396373" duration="3114000" />
     </task>
     <task id="LOCAL-00001" summary="add service pagos">
       <option name="closed" value="true" />
@@ -272,7 +294,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750358393971</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="update">
+      <option name="closed" value="true" />
+      <created>1750552388206</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1750552388206</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -283,7 +313,8 @@
     <MESSAGE value="add service pagos" />
     <MESSAGE value="corren en eureka server" />
     <MESSAGE value="add notificaciones" />
-    <option name="LAST_COMMIT_MESSAGE" value="add notificaciones" />
+    <MESSAGE value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="update" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

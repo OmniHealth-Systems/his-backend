@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: ms-documentos
+  datasource:
+    url: jdbc:mysql://${AIVEN_DB_HOST}:${AIVEN_DB_PORT}/documentos_db?sslMode=REQUIRED&serverTimezone=UTC&createDatabaseIfNotExist=true
+    username: ${AIVEN_DB_USER}
+    password: ${AIVEN_DB_PASS}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  kafka:
+    bootstrap-servers: ${CONFLUENT_BOOTSTRAP_SERVERS}
+    consumer:
+      group-id: documentos-group
+      auto-offset-reset: earliest
+    properties:
+      security.protocol: SASL_SSL
+      sasl.mechanism: PLAIN
+      sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="${CONFLUENT_API_KEY}" password="${CONFLUENT_API_SECRET}";
+
+storage:
+  s3:
+    endpoint: ${STORAGE_S3_ENDPOINT}
+    access-key: ${STORAGE_S3_ACCESS_KEY}
+    secret-key: ${STORAGE_S3_SECRET_KEY}
+    region: ${STORAGE_S3_REGION}
+    bucket: ${STORAGE_S3_BUCKET}
+
+logging:
+  level:
+    com.clinic: DEBUG
